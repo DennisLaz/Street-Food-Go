@@ -2,41 +2,51 @@ package gr.hua.dit.StreetFoodGo.core.service.impl;
 
 import gr.hua.dit.StreetFoodGo.core.model.Person;
 import gr.hua.dit.StreetFoodGo.core.model.PersonType;
+import gr.hua.dit.StreetFoodGo.core.port.SmsNotificationPort;
 import gr.hua.dit.StreetFoodGo.core.repository.PersonRepository;
+import gr.hua.dit.StreetFoodGo.core.service.PersonService;
 import gr.hua.dit.StreetFoodGo.core.service.mapper.PersonMapper;
 import gr.hua.dit.StreetFoodGo.core.service.model.CreatePersonRequest;
 import gr.hua.dit.StreetFoodGo.core.service.model.CreatePersonResult;
 import gr.hua.dit.StreetFoodGo.core.service.model.PersonView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Default implementation of {@link gr.hua.dit.StreetFoodGo.core.service.PersonService}
  */
 @Service
-public class PersonServiceImpl implements gr.hua.dit.StreetFoodGo.core.service.PersonService {
+public class PersonServiceImpl implements PersonService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PersonServiceImpl.class);
 
     private final PasswordEncoder passwordEncoder;
     private final PersonRepository personRepository;
     private final PersonMapper personMapper;
+    private final SmsNotificationPort smsNotificationPort;
+
 
     public PersonServiceImpl(final PasswordEncoder passwordEncoder,
-                             final PersonRepository personRepository,
-                             final PersonMapper personMapper) {
+                             PersonRepository personRepository,
+                             final PersonMapper personMapper,
+                             final SmsNotificationPort smsNotificationPort) {
         if (passwordEncoder == null) throw new NullPointerException();
         if (personRepository == null) throw new NullPointerException();
         if (personMapper == null) throw new NullPointerException();
+        if (smsNotificationPort == null) throw new NullPointerException();
+
 
         this.passwordEncoder = passwordEncoder;
         this.personRepository = personRepository;
         this.personMapper = personMapper;
+        this.smsNotificationPort = smsNotificationPort;
     }
 
 
     @Override
-    public CreatePersonResult createPerson (final CreatePersonRequest createPersonRequest) {
+    public CreatePersonResult createPerson (final CreatePersonRequest createPersonRequest, final boolean notify) {
         if (createPersonRequest == null) throw new NullPointerException();
 
         // Unpack (we assume validated CreatePersonRequest)
@@ -93,8 +103,15 @@ public class PersonServiceImpl implements gr.hua.dit.StreetFoodGo.core.service.P
 
         // --------------------------------------------------
 
-
-
+        if (notify) {
+            final String content = String.format(
+                    "You have successfully registered for Street Food Go" +
+                            "Use your email (%s) to log in.", emailAddress);
+            final boolean sent = this.smsNotificationPort.sendSms(phoneNumber, content);
+            if (!sent) {
+                LOGGER.warn("");
+            }
+        }
 
         // Map `Person` to `PersonView`.
         // --------------------------------------------------
