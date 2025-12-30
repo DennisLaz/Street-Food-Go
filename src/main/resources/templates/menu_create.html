@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Menu</title>
+</head>
+<body>
+
+<h1>Create Menu</h1>
+
+<form method="post" th:action="@{/menu_create}" th:object="${menuCreateRequest}">
+
+
+    <label>Title:</label>
+    <input type="text" name="title"/>
+
+    <h3>Items</h3>
+
+    <div>
+        <input type="text" name="items[0].name" placeholder="Name"/>
+        <input type="number" name="items[0].price" placeholder="Price"/>
+        <input type="text" name="items[0].description" placeholder="Description"/>
+    </div>
+
+    <button type="submit">Create</button>
+</form>
+
+</body>
+</html>

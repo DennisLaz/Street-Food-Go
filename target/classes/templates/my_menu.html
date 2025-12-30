@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Menu</title>
+</head>
+<body>
+
+<h1>My Menu</h1>
+
+<div th:if="${menu == null}">
+    <p>No menu yet.</p>
+    <a href="/menus/create">Create Menu</a>
+</div>
+
+<div th:if="${menu != null}">
+    <h2 th:text="${menu.title}"></h2>
+
+    <ul>
+        <li th:each="item : ${menu.items}">
+            <span th:text="${item.name}"></span> -
+            <span th:text="${item.price}"></span> €
+        </li>
+    </ul>
+
+    <a th:href="@{/menus/edit/{id}(id=${menu.menuId})}">
+        Edit Menu
+    </a>
+</div>
+
+</body>
+</html>

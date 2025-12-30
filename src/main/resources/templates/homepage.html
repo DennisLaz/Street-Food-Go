@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>StreetFoodGo</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">StreetFoodGo</div>
+
+    <div class="auth-links">
+        <a th:href="@{/login}">Log in</a>
+        <a th:href="@{/register}" class="signup">Sign up</a>
+    </div>
+</header>
+
+<main class="hero">
+    <h1>StreetFoodGo</h1>
+    <p>The smart way to order!</p>
+
+    <a th:href="@{/restaurants}" class="menu-btn">
+        Check out Menus
+    </a>
+</main>
+
+</body>
+</html>
