@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Menu</title>
+</head>
+<body>
+
+<h1>Edit Menu</h1>
+
+<form th:action="@{/menu_edit/{id}(id=${menuId})}"
+      th:object="${form}"
+      method="post">
+
+    <label>Menu title</label>
+    <input type="text" th:field="*{title}"/>
+
+    <h2>Items</h2>
+
+    <div th:each="item, stat : *{items}">
+        <input type="hidden" th:field="*{items[__${stat.index}__].id}"/>
+
+        <input type="text"
+               th:field="*{items[__${stat.index}__].name}"
+               placeholder="Name"/>
+
+        <input type="number" step="0.01"
+               th:field="*{items[__${stat.index}__].price}"
+               placeholder="Price"/>
+
+        <input type="text"
+               th:field="*{items[__${stat.index}__].description}"
+               placeholder="Description"/>
+
+        <label>
+            Delete
+            <input type="checkbox"
+                   th:field="*{items[__${stat.index}__].delete}"/>
+        </label>
+
+        <hr/>
+    </div>
+
+    <h3>Add new item</h3>
+
+    <div>
+        <input type="text" name="items[].name" placeholder="Name"/>
+        <input type="number" step="0.01" name="items[].price" placeholder="Price"/>
+        <input type="text" name="items[].description" placeholder="Description"/>
+    </div>
+
+    <button type="submit">Save changes</button>
+</form>
+
+</body>
+</html>

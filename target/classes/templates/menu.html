@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurants</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        .restaurant-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .restaurant-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .restaurant-name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Available Restaurants</h1>
+
+    <div th:each="restaurant : ${restaurants}"
+         class="restaurant-card"
+         th:onclick="|window.location.href='/restaurants/${restaurant.id}/menu'|">
+
+        <div class="restaurant-name"
+             th:text="${restaurant.username}">
+            Restaurant Name
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

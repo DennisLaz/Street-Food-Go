@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Order</title>
+</head>
+<body>
+
+<h1>My Cart</h1>
+
+<div th:if="${order.items.isEmpty()}">
+    <p>Your cart is empty.</p>
+</div>
+
+<table th:if="${!order.items.isEmpty()}" border="1" cellpadding="5">
+    <thead>
+    <tr>
+        <th>Item</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${order.items}">
+        <td th:text="${item.name()}">Item Name</td>
+        <td th:text="${item.price}">Price</td>
+        <td th:text="${item.quantity}">Quantity</td>
+        <td th:text="${item.totalPrice}">Total</td>
+        <td>
+            <form th:action="@{/my_order/remove-item}" method="post">
+                <input type="hidden" name="menuItemId" th:value="${item.menuItemId}" />
+                <button type="submit">Remove</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="3"><b>Total Price</b></td>
+        <td th:text="${order.totalPrice()}">0.00</td>
+        <td></td>
+    </tr>
+    </tfoot>
+</table>
+
+<a href="/restaurants">Continue Shopping</a>
+
+<form th:if="${!order.items.isEmpty()}" th:action="@{/my_order/submit}" method="post">
+    <button type="submit">Submit Order</button>
+</form>
+
+</body>
+</html>
