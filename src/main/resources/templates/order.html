@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order</title>
+</head>
+<body>
+
+<h1>Order <span th:text="${order.orderId()}"></span></h1>
+
+<p>Status: <b th:text="${order.status()}"></b></p>
+<p>Customer: <span th:text="${order.customer().username()}"></span></p>
+
+<h3>Items</h3>
+
+<table border="1" cellpadding="5">
+    <thead>
+    <tr>
+        <th>Item</th>
+        <th>Qty</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="item : ${order.items()}">
+        <td th:text="${item.name()}"></td>
+        <td th:text="${item.quantity()}"></td>
+        <td th:text="${item.totalPrice()}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<p><b>Total:</b> <span th:text="${order.totalPrice()}"></span></p>
+
+<hr/>
+
+<!-- OPEN / PENDING -->
+<div th:if="${order.status().name() == 'PENDING'}">
+    <form th:action="@{/orders/{id}/accept(id=${order.orderId()})}" method="post">
+        <button type="submit">Accept</button>
+    </form>
+
+    <form th:action="@{/orders/{id}/reject(id=${order.orderId()})}" method="post">
+        <button type="submit">Reject</button>
+    </form>
+</div>
+
+<!-- QUEUED -->
+<div th:if="${order.status().name() == 'QUEUED'}">
+    <form th:action="@{/orders/{id}/start(id=${order.orderId()})}" method="post">
+        <button type="submit">Start Order</button>
+    </form>
+</div>
+
+<!-- IN_PROGRESS -->
+<div th:if="${order.status().name() == 'INPROGRESS'}">
+    <form th:action="@{/orders/{id}/complete(id=${order.orderId()})}" method="post">
+        <button type="submit">Complete Order</button>
+    </form>
+</div>
+
+<br/>
+<a href="/orders">Back to orders</a>
+
+</body>
+</html>

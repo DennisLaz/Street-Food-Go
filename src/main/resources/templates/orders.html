@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Orders</title>
+</head>
+<body>
+
+<h1>Active Orders</h1>
+
+<div th:if="${#lists.isEmpty(orders)}">
+    <p>No active orders at the moment.</p>
+</div>
+
+<table th:if="${!#lists.isEmpty(orders)}" border="1" cellpadding="5">
+    <thead>
+    <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.orderId()}"></td>
+        <td th:text="${order.customer().username()}"></td>
+        <td th:text="${order.status()}"></td>
+        <td th:text="${order.totalPrice()}"></td>
+        <td>
+            <a th:href="@{/orders/{id}(id=${order.orderId()})}">
+                View
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
