@@ -27,17 +27,29 @@
 
         <ul>
             <li>
-                <a th:href="@{/profile}">Profile</a>
+                <a th:href="@{/}">Home</a>
             </li>
             <li>
                 <a th:href="@{/logout}">Logout</a>
             </li>
-            <li>
-                <a th:href="@{/restaurants}">Check for Orders</a>
+            <!-- CUSTOMER CTA -->
+            <li th:if="${me != null and me.type.name() == 'CUSTOMER'}">
+                <a th:href="@{/restaurants}" class="menu-btn">
+                    Browse Restaurants
+                </a>
+            </li>
+
+            <!-- RESTAURANT CTA -->
+            <li th:if="${me != null and me.type.name() == 'RESTAURANT'}">
+                <a th:href="@{/orders}" class="menu-btn">
+                    View Incoming Orders
+                </a>
             </li>
 
         </ul>
     </div>
+
+
 
 </section>
 

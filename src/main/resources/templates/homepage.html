@@ -10,19 +10,47 @@
 <header class="navbar">
     <div class="logo">StreetFoodGo</div>
 
-    <div class="auth-links">
-        <a th:href="@{/login}">Log in</a>
-        <a th:href="@{/register}" class="signup">Sign up</a>
+    <!-- NOT AUTHENTICATED -->
+    <div class="auth-links" th:if="${currentUser == null}">
+        <a th:href="@{/login}" class="btn secondary">Log in</a>
+        <a th:href="@{/register}" class="btn primary">Sign up</a>
+    </div>
+
+    <!-- AUTHENTICATED -->
+    <div class="user-info" th:if="${currentUser != null}">
+        <span class="welcome">
+            Welcome,
+            <b th:text="${currentUser.username}">username</b>
+            (<span th:text="${currentUser.type}">ROLE</span>)
+        </span>
+        <a th:href="@{/logout}" class="btn secondary">Logout</a>
     </div>
 </header>
 
 <main class="hero">
     <h1>StreetFoodGo</h1>
-    <p>The smart way to order!</p>
+    <p class="motto">The smart way to order street food</p>
 
-    <a th:href="@{/restaurants}" class="menu-btn">
-        Check out Menus
-    </a>
+    <!-- CUSTOMER CTA -->
+    <div th:if="${currentUser != null and currentUser.type.name() == 'CUSTOMER'}">
+        <a th:href="@{/restaurants}" class="menu-btn">
+            Browse Restaurants
+        </a>
+    </div>
+
+    <!-- RESTAURANT CTA -->
+    <div th:if="${currentUser != null and currentUser.type.name() == 'RESTAURANT'}">
+        <a th:href="@{/orders}" class="menu-btn">
+            View Incoming Orders
+        </a>
+    </div>
+
+    <!-- GUEST CTA -->
+    <div th:if="${currentUser == null}">
+        <p class="hint">
+            Log in or sign up to start ordering delicious street food!
+        </p>
+    </div>
 </main>
 
 </body>
