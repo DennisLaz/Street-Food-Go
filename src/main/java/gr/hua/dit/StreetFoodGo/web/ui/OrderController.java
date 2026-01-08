@@ -43,16 +43,6 @@ public class OrderController {
         this.orderItemMapper = orderItemMapper;
     }
 
-
-    @GetMapping("")
-    public String list(final Model model){
-        final List<OrderView> orderViewList=this.orderService.getOrders();
-        model.addAttribute("orders",orderViewList);
-        return "orders";
-    }
-
-
-
     // 🔐 CUSTOMER ONLY
     @PostMapping("/orders/add-item")
     public String addItemToOrder(@RequestParam Long menuItemId) {
