@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Status</title>
+</head>
+<body>
+
+<h1>Order Status</h1>
+
+<div th:switch="${order.status}">
+
+    <!-- QUEUED -->
+    <div th:case="'QUEUED'">
+        <h2>Your order has been accepted</h2>
+        <p>
+            The restaurant has accepted your order and it is now queued.
+            Your food will be prepared shortly.
+        </p>
+    </div>
+
+    <!-- REJECTED / CANCELLED -->
+    <div th:case="'CANCELLED'">
+        <h2>Order Rejected</h2>
+        <p>
+            Unfortunately, the restaurant rejected your order.
+            You can try ordering from another restaurant.
+        </p>
+    </div>
+
+    <!-- IN PROGRESS -->
+    <div th:case="'INPROGRESS'">
+        <h2>Your order is being prepared</h2>
+        <p>
+            The restaurant is currently preparing your order.
+            Please wait.
+        </p>
+    </div>
+
+    <!-- COMPLETED -->
+    <div th:case="'COMPLETED'">
+        <h2>Order Completed</h2>
+        <p>
+            Your order has been completed successfully.
+            Enjoy your meal!
+        </p>
+    </div>
+
+    <!-- FALLBACK -->
+    <div th:case="*">
+        <h2>Order Submitted</h2>
+        <p>
+            Your order has been submitted.
+            Please wait for further updates.
+        </p>
+    </div>
+
+</div>
+
+<br/>
+
+<a href="/restaurants">Back to restaurants</a>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Menu</title>
+</head>
+<body>
+
+<h1 th:text="${menu.title}">Menu</h1>
+
+<h2 th:text="${menu.restaurantName()}">
+    Restaurant
+</h2>
+
+<div th:each="item : ${menu.items}">
+    <p>
+        <b th:text="${item.name}"></b>
+        <span th:text="${item.price}"></span>
+    </p>
+
+    <p th:text="${item.description}"></p>
+
+    <form th:if="${#authentication.principal != null}"
+          th:action="@{/restaurants/{id}/add-item(id=${restaurantId})}"
+
+          method="post">
+
+        <input type="hidden"
+               name="menuItemId"
+               th:value="${item.menuItemId}" />
+
+
+        <button type="submit">Add</button>
+    </form>
+
+</div>
+
+<a th:if="${#authentication.principal != null}"
+   href="/my_order">
+    Go to cart
+</a>
+
+</body>
+</html>

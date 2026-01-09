@@ -1,0 +1,13 @@
+package gr.hua.dit.StreetFoodGo.core.service.model;
+
+import gr.hua.dit.StreetFoodGo.core.model.OrderItem;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
+
+public record CompleteOrderRequest(@NotNull @Positive Long orderId,
+                                   @NotNull @NotBlank ArrayList<@Size(max=1000) OrderItem> orderItems) {
+}

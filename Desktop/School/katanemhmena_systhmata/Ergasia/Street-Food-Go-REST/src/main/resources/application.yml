@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: StreetFoodGo
+
+  datasource:
+    url: jdbc:h2:file:./LOCAL_DATA2/h2/app;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE
+    username: sa
+    password: changeme
+    driver-class-name: org.h2.Driver
+
+
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop #dev only
+    open-in-view: false
+    properties:
+      hibernate.dialect: org.hibernate.dialect.H2Dialect
+      hibernate.format_sql: true
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+    include-message: always
+    include-binding-errors: always
+    include-exception: true
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+# Custom Application Properties.
+app:
+  jwt:
+    issuer: "street-food-go-api"
+    audience: "external-system"
+    secret: "${JWT_SECRET:74GjGsQkdfFTDRx5KVIeSw51qoICngqC2r8w4SZo6iU=}" # openssl rand -base64 32
+    ttl_minutes: 60

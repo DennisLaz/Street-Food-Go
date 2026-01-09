@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="https://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{base}">
+
+<head>
+    <title>Make your Order</title>
+</head>
+
+<body>
+
+<header layout:fragment="header">
+    <p>
+        <a th:href="@{orders.html}">Back to menu</a>
+    </p>
+    <h1>Make your Order</h1>
+</header>
+
+<section layout:fragment="main">
+
+    <div class="mb-4">
+        <a th:href="@{/profile}" th:text="'Logged in as ' + ${me.emailAddress()} + ' (' + ${me.type()} + ')'"></a>
+    </div>
+
+    <form th:action="@{/order/new}" method="post" th:object="${form}">
+
+        <div class="mb-3">
+            <label for="restaurantId" class="form-label">Restaurant Name</label>
+            <input type="text" name="restaurantId" th:field="*{restaurantId}" class="form-control" required />
+            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('restaurantId')}" th:errors="*{restaurantId}"></div>
+        </div>
+
+    </form>
+</section>
+
+</body>
+</html>
