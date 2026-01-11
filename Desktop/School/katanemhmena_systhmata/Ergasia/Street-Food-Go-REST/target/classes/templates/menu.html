@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html   lang="el" xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{base}">
 <head>
     <meta charset="UTF-8">
     <title>Restaurants</title>
@@ -37,21 +39,25 @@
 </head>
 <body>
 
-<div class="container">
-    <h1>Available Restaurants</h1>
+<section layout:fragment="main">
 
-    <div th:each="restaurant : ${restaurants}"
-         class="restaurant-card"
-         th:onclick="|window.location.href='/restaurants/${restaurant.id}/menu'|">
+    <div class="container">
+        <h1>Available Restaurants</h1>
 
-        <div class="restaurant-name"
-             th:text="${restaurant.username}">
-            Restaurant Name
+        <div th:each="restaurant : ${restaurants}"
+             class="restaurant-card"
+             th:onclick="|window.location.href='/restaurants/${restaurant.id}/menu'|">
+
+            <div class="restaurant-name"
+                 th:text="${restaurant.username}">
+                Restaurant Name
+            </div>
+
         </div>
 
     </div>
 
-</div>
+</section>
 
 </body>
 </html>

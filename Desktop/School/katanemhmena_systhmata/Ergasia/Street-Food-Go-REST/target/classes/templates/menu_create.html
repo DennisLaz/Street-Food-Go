@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html   lang="el" xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{base}">
 <head>
     <title>Create Menu</title>
     <meta charset="UTF-8">
 </head>
 <body>
+
+<section layout:fragment="main">
 
 <h1>Create Menu</h1>
 
@@ -63,6 +67,8 @@
     // Add one item by default
     addItem();
 </script>
+
+</section>
 
 </body>
 </html>

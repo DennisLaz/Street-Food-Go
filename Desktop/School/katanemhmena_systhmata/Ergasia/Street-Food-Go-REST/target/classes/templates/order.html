@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html   lang="el" xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{base}">
 <head>
     <title>Order</title>
 </head>
 <body>
+
+<section layout:fragment="main">
 
 <h1>Order <span th:text="${order.orderId()}"></span></h1>
 
@@ -61,6 +65,8 @@
 
 <br/>
 <a href="/orders">Back to orders</a>
+
+</section>
 
 </body>
 </html>

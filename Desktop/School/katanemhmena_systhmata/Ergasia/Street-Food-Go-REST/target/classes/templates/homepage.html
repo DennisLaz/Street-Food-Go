@@ -1,57 +1,62 @@
 <!DOCTYPE html>
-<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<html   lang="el" xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{base}">
 <head>
     <meta charset="UTF-8">
     <title>StreetFoodGo</title>
-    <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
 <body>
 
-<header class="navbar">
-    <div class="logo">StreetFoodGo</div>
+<section layout:fragment="main">
 
-    <!-- NOT AUTHENTICATED -->
-    <div class="auth-links" th:if="${currentUser == null}">
-        <a th:href="@{/login}" class="btn secondary">Log in</a>
-        <a th:href="@{/register}" class="btn primary">Sign up</a>
-    </div>
+    <header class="navbar">
+        <div class="logo">StreetFoodGo</div>
 
-    <!-- AUTHENTICATED -->
-    <div class="user-info" th:if="${currentUser != null}">
-        <span class="welcome">
-            Welcome,
-            <b th:text="${currentUser.username}">username</b>
-            (<span th:text="${currentUser.type}">ROLE</span>)
-        </span>
-        <a th:href="@{/logout}" class="btn secondary">Logout</a>
-    </div>
-</header>
+        <!-- NOT AUTHENTICATED -->
+        <div class="auth-links" th:if="${currentUser == null}">
+            <a th:href="@{/login}" class="btn secondary">Log in</a>
+            <a th:href="@{/register}" class="btn primary">Sign up</a>
+        </div>
 
-<main class="hero">
-    <h1>StreetFoodGo</h1>
-    <p class="motto">The smart way to order street food</p>
+        <!-- AUTHENTICATED -->
+        <div class="user-info" th:if="${currentUser != null}">
+            <span class="welcome">
+                Welcome,
+                <b th:text="${currentUser.username}">username</b>
+                (<span th:text="${currentUser.type}">ROLE</span>)
+            </span>
+            <a th:href="@{/logout}" class="btn secondary">Logout</a>
+        </div>
+    </header>
 
-    <!-- CUSTOMER CTA -->
-    <div th:if="${currentUser != null and currentUser.type.name() == 'CUSTOMER'}">
-        <a th:href="@{/restaurants}" class="menu-btn">
-            Browse Restaurants
-        </a>
-    </div>
+    <main class="hero">
+        <h1>StreetFoodGo</h1>
+        <p class="motto">The smart way to order street food</p>
 
-    <!-- RESTAURANT CTA -->
-    <div th:if="${currentUser != null and currentUser.type.name() == 'RESTAURANT'}">
-        <a th:href="@{/orders}" class="menu-btn">
-            View Incoming Orders
-        </a>
-    </div>
+        <!-- CUSTOMER CTA -->
+        <div th:if="${currentUser != null and currentUser.type.name() == 'CUSTOMER'}">
+            <a th:href="@{/restaurants}" class="menu-btn">
+                Browse Restaurants
+            </a>
+        </div>
 
-    <!-- GUEST CTA -->
-    <div th:if="${currentUser == null}">
-        <p class="hint">
-            Log in or sign up to start ordering delicious street food!
-        </p>
-    </div>
-</main>
+        <!-- RESTAURANT CTA -->
+        <div th:if="${currentUser != null and currentUser.type.name() == 'RESTAURANT'}">
+            <a th:href="@{/orders}" class="menu-btn">
+                View Incoming Orders
+            </a>
+        </div>
+
+        <!-- GUEST CTA -->
+        <div th:if="${currentUser == null}">
+            <p class="hint">
+                Log in or sign up to start ordering delicious street food!
+            </p>
+        </div>
+    </main>
+
+</section>
 
 </body>
 </html>

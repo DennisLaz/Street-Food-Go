@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html   lang="el" xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{base}">
 <head>
     <title>Edit Menu</title>
 </head>
 <body>
+
+<section layout:fragment="main">
 
 <h1>Edit Menu</h1>
 
@@ -50,6 +54,8 @@
 
     <button type="submit">Save changes</button>
 </form>
+
+</section>
 
 </body>
 </html>
