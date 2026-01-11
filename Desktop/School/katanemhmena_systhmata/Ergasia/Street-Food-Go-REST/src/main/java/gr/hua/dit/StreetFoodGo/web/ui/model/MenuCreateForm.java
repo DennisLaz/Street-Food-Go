@@ -14,8 +14,7 @@ public class MenuCreateForm {
     @Valid
     private List<MenuItemForm> items = new ArrayList<>();
 
-    public MenuCreateForm() {
-        items.add(new MenuItemForm()); // τουλάχιστον ένα item
+    public MenuCreateForm() {items.add(new MenuItemForm());
     }
 
     public String getTitle() {

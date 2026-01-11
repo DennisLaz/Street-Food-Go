@@ -20,9 +20,6 @@ public class OrderItem {
     @Column(name = "id")
     private Long id;
 
-    // -----------------------------
-    // Order
-    // -----------------------------
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
@@ -32,9 +29,6 @@ public class OrderItem {
     )
     private Order order;
 
-    // -----------------------------
-    // MenuItem
-    // -----------------------------
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
@@ -44,23 +38,14 @@ public class OrderItem {
     )
     private MenuItem menuItem;
 
-    // -----------------------------
-    // Quantity
-    // -----------------------------
     @NotNull
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    // -----------------------------
-    // Price snapshot
-    // -----------------------------
     @NotNull
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    // -----------------------------
-    // Constructors
-    // -----------------------------
     public OrderItem() {
     }
 
@@ -71,9 +56,6 @@ public class OrderItem {
         this.price = menuItem.getPrice();
     }
 
-    // -----------------------------
-    // Business logic
-    // -----------------------------
     public void increaseQuantity() {
         this.quantity++;
     }
@@ -82,9 +64,6 @@ public class OrderItem {
         return price.multiply(BigDecimal.valueOf(quantity));
     }
 
-    // -----------------------------
-    // Getters / Setters
-    // -----------------------------
     public Long getId() {
         return id;
     }

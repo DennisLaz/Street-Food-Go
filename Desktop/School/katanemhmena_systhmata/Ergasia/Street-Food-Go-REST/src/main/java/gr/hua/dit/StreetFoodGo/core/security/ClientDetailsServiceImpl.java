@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class ClientDetailsServiceImpl implements ClientDetailsService {
 
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
 
     public ClientDetailsServiceImpl(final ClientRepository clientRepository) {
         if (clientRepository == null) throw new NullPointerException();

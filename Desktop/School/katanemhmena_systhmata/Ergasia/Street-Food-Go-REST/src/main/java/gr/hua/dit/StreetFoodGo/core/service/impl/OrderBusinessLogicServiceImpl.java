@@ -25,14 +25,12 @@ import java.util.Set;
 
 /**
  * Default Implementation of {@link OrderBusinessLogicService}
- *
- * TODO some parts can be reused(security checks)
  */
 @Service
 public class OrderBusinessLogicServiceImpl implements OrderBusinessLogicService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderBusinessLogicServiceImpl.class);
-    private static final Set<OrderStatus> ACTIVE = Set.of(OrderStatus.QUEUED, OrderStatus.INPROGRESS);
+    private static final Set<OrderStatus> ACTIVE = Set.of(OrderStatus.OPEN, OrderStatus.QUEUED, OrderStatus.INPROGRESS);
 
     private final OrderMapper orderMapper;
     private final OrderRepository orderRepository;
@@ -40,8 +38,6 @@ public class OrderBusinessLogicServiceImpl implements OrderBusinessLogicService 
     private final CurrentUserProvider currentUserProvider;
     private final SmsNotificationPort smsNotificationPort;
     private final MenuItemRepository menuItemRepository;
-
-
 
     public OrderBusinessLogicServiceImpl(OrderMapper orderMapper,
                             OrderRepository orderRepository,
@@ -119,13 +115,17 @@ public class OrderBusinessLogicServiceImpl implements OrderBusinessLogicService 
                 });
 
         // -------------------------------------------------
-        // Rule: one restaurant per order
+        // Rule: Customer can only order again if the order is cancelled or completed
         // -------------------------------------------------
-        if (!order.getRestaurant().getId().equals(restaurant.getId())) {
-            throw new IllegalStateException(
-                    "You already have an open order from another restaurant"
-            );
+        if (!order.getRestaurant().getId().equals(restaurant.getId()) && order.isActive()){
+
+
+                throw new IllegalStateException(
+                        "You already have an open order from another restaurant"
+                );
+
         }
+
 
         // -------------------------------------------------
         // Add or update OrderItem
@@ -136,6 +136,31 @@ public class OrderBusinessLogicServiceImpl implements OrderBusinessLogicService 
         // Persist
         // -------------------------------------------------
         orderRepository.save(order);
+    }
+
+    @Override
+    @Transactional
+    public OrderView getOrCreateOpenOrderForCustomer(Long customerId) {
+
+        Person customer = personRepository.findById(customerId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Customer not found with id: " + customerId
+                ));
+
+        return orderRepository
+                .findByCustomerIdAndStatusIn(customerId, ACTIVE)
+
+                .map(orderMapper::convertOrdertoOrderView)
+                .orElseGet(() -> {
+
+                    Order order = new Order();
+                    order.setCustomer(customer);
+                    order.setStatus(OrderStatus.OPEN);
+
+                    orderRepository.save(order);
+
+                    return orderMapper.convertOrdertoOrderView(order);
+                });
     }
 
     @Override
@@ -454,7 +479,7 @@ public class OrderBusinessLogicServiceImpl implements OrderBusinessLogicService 
             Long menuItemId
     ) {
         Order order = orderRepository
-                .findOpenByCustomerId(customerId)
+                .findByCustomerIdAndStatusIn(customerId, ACTIVE)
                 .orElseGet(() -> {
                     Order newOrder = new Order();
                     newOrder.setCustomer(personRepository.getReferenceById(customerId));
@@ -520,6 +545,19 @@ public class OrderBusinessLogicServiceImpl implements OrderBusinessLogicService 
 
         orderRepository.save(order);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<OrderView> getLatestPendingOrderForCustomer(Long customerId) {
+
+        return orderRepository
+                .findFirstByCustomerIdAndStatusOrderByQueuedAtDesc(
+                        customerId,
+                        OrderStatus.PENDING
+                )
+                .map(orderMapper::convertOrdertoOrderView);
+    }
+
 
 
 }

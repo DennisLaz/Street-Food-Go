@@ -67,6 +67,7 @@ public class InitializationService {
                 new Client(null, "client02", "s3cr3t", "INTEGRATION_WRITE")
         );
 
+        //Δημιουργια αρχικων Profiles
         this.clientRepository.saveAll(clientList);
         final List<CreatePersonRequest> createPersonRequestList = List.of(
                 new CreatePersonRequest(
@@ -130,7 +131,7 @@ public class InitializationService {
 
         LOGGER.info("Database initialization completed successfully");
 
-
+        //Δημιουργια 2 Αρχικων Menu
         MenuCreateRequest request = new MenuCreateRequest(
             "Burger House Menu",
             List.of(

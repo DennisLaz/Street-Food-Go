@@ -9,6 +9,7 @@ import gr.hua.dit.StreetFoodGo.core.repository.PersonRepository;
 import gr.hua.dit.StreetFoodGo.core.security.CurrentUser;
 import gr.hua.dit.StreetFoodGo.core.security.CurrentUserProvider;
 import gr.hua.dit.StreetFoodGo.core.service.MenuService;
+import gr.hua.dit.StreetFoodGo.core.service.OrderBusinessLogicService;
 import gr.hua.dit.StreetFoodGo.web.ui.model.*;
 import gr.hua.dit.StreetFoodGo.core.service.mapper.MenuMapper;
 import gr.hua.dit.StreetFoodGo.core.service.model.MenuView;
@@ -21,7 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+/**
+ * Default Implementation of {@link MenuService}
+ */
 @Service
 public class MenuServiceImpl implements MenuService {
 
@@ -51,7 +54,7 @@ public class MenuServiceImpl implements MenuService {
         item.setName(request.name());
         item.setDescription(request.description());
         item.setPrice(request.price());
-        item.setMenu(menu);                  // ⬅️ κρίσιμο
+        item.setMenu(menu);
         item.setAvailable(true);
         return item;
     }
@@ -76,6 +79,7 @@ public class MenuServiceImpl implements MenuService {
         //-----------------------------------------
         // Security
         //-----------------------------------------
+
         final CurrentUser currentUser = currentUserProvider.getCurrentUser()
                 .orElseThrow(() -> new SecurityException("Authentication required"));
 
@@ -88,17 +92,20 @@ public class MenuServiceImpl implements MenuService {
         //-----------------------------------------
         // Load restaurant entity
         //-----------------------------------------
+
         final Person restaurant = personRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant not found"));
 
         //-----------------------------------------
         // Rule: only one active menu per restaurant
         //-----------------------------------------
+
         if (menuRepository.existsByRestaurantIdAndActiveTrue(restaurantId)) {
             throw new IllegalStateException("Restaurant already has an active menu");
         }
 
         //-----------------------------------------
+
         Menu menu = getMenu(createMenuDto, restaurant);
 
         final Menu savedMenu = menuRepository.save(menu);
@@ -118,10 +125,10 @@ public class MenuServiceImpl implements MenuService {
             MenuItem item = new MenuItem();
             item.setName(itemRequest.name());
             item.setDescription(itemRequest.description());
-            item.setPrice(itemRequest.price()); // double → BigDecimal
+            item.setPrice(itemRequest.price());
             item.setAvailable(true);
 
-            menu.addItem(item); // σημαντικό: ορίζει το menu στο item και προσθέτει στη λίστα
+            menu.addItem(item);
         }
         return menu;
     }
@@ -140,20 +147,23 @@ public class MenuServiceImpl implements MenuService {
         }
 
         // 1. Δημιουργία Menu
+
         Menu menu = new Menu();
         menu.setRestaurant(restaurant);
         menu.setTitle(request.title());
         menu.setActive(true);
 
-        // 2. Δημιουργία MenuItems από MenuItemRequest
+        // 2. Δημιουργία MenuItems
+
         List<MenuItem> items = request.items().stream()
                 .map(req -> toMenuItem(req, menu))
                 .toList();
 
         // 3. Σύνδεση items με menu
+
         menu.setItems(items);
 
-        // 4. Save (cascade → σώζει και items)
+        // 4. Save
         Menu savedMenu = menuRepository.save(menu);
 
         return menuMapper.convertMenuToMenuView(savedMenu);

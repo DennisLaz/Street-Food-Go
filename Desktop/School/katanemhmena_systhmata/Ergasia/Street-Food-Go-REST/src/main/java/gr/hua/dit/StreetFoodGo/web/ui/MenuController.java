@@ -53,11 +53,11 @@ public class MenuController {
     }
 
 
-    // 🔐 RESTAURANT: Create menu (FORM SUBMIT)
+    //Create menu (FORM SUBMIT)
     @GetMapping("/menu_create")
     public String showCreateMenuForm(Model model) {
 
-        // 1️⃣ Είναι logged in;
+        // login
         Optional<CurrentUser> currentUserOpt = currentUserProvider.getCurrentUser();
         if (currentUserOpt.isEmpty()) {
             return "redirect:/login";
@@ -65,17 +65,17 @@ public class MenuController {
 
         CurrentUser currentUser = currentUserOpt.get();
 
-        // 2️⃣ Είναι RESTAURANT;
+        // restaurant check
         if (currentUser.type() != PersonType.RESTAURANT) {
             return "redirect:/";
         }
 
-        // 3️⃣ Έχει ήδη menu;
+        // menu check
         if (menuService.getMyMenu().isPresent()) {
             return "redirect:/menu_edit";
         }
 
-        // 4️⃣ OK → show form
+        //-------------------------------
         model.addAttribute("form", new MenuCreateForm());
         return "menu_create";
     }
@@ -96,11 +96,13 @@ public class MenuController {
         return "redirect:/my_menu";
     }
 
-
+    //Edit menu
     @GetMapping("/menu_edit")
     public String editMenu(Model model, RedirectAttributes redirectAttributes) {
 
         Optional<MenuView> menuOpt = menuService.getMyMenu();
+
+        //check για menu
 
         if (menuOpt.isEmpty()) {
             redirectAttributes.addFlashAttribute(
@@ -133,10 +135,12 @@ public class MenuController {
 
 
 
-    // 🔐 RESTAURANT: Get own menu
+    //Get own menu
     @GetMapping("/my_menu")
     public String myMenu(Model model, RedirectAttributes redirectAttributes) {
         Optional<MenuView> menuOpt = menuService.getMyMenu();
+
+        //check για menu
 
         if (menuOpt.isEmpty()) {
             redirectAttributes.addFlashAttribute(
@@ -159,7 +163,7 @@ public class MenuController {
         return "restaurants";
     }
 
-    // 🌍 PUBLIC: Get active menu by restaurant
+    //Get active menu by restaurant
     @GetMapping("/restaurants/{restaurantId}")
     public String viewRestaurantMenu(
             @PathVariable Long restaurantId,

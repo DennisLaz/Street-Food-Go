@@ -94,8 +94,6 @@ public class PersonBusinessLogicServiceImpl implements PersonBusinessLogicServic
             return  CreatePersonResult.failure("Not supported role");
         }
 
-
-        // TODO if needed down the line
         final PhoneNumberValidationResult phoneNumberValidationResult
                 = this.phoneNumberPort.validate(phoneNumber);
         if (!phoneNumberValidationResult.isValidMobile()) {
@@ -116,11 +114,6 @@ public class PersonBusinessLogicServiceImpl implements PersonBusinessLogicServic
         if(this.personRepository.existsByPhoneNumber(phoneNumber)){
             return CreatePersonResult.failure("Phone number must be unique");
         }
-
-        // -------------------------------
-
-
-        // TODO  sms call
 
         // -------------------------------
 

@@ -64,7 +64,7 @@ public class MenuMapper {
 
         List<MenuItemUpdateForm> items = menu.items().stream()
                 .map(item -> new MenuItemUpdateForm(
-                        item.menuItemId(),   // ΠΡΕΠΕΙ να υπάρχει στο MenuItemView
+                        item.menuItemId(),
                         item.name(),
                         item.price(),
                         item.description(),

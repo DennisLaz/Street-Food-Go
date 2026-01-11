@@ -31,7 +31,6 @@ public class RegistrationController {
         if (AuthController.isAuthenticated(authentication)) {
             return "redirect:/profile";
         }
-        // TODO if user is authenticated, redirect to tickets
         // Initial data for the form.
         final CreatePersonRequest createPersonRequest =
                 new CreatePersonRequest(

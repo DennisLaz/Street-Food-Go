@@ -31,8 +31,10 @@ public class OrderController {
         this.orderBusinessLogicService = orderBusinessLogicService;
         this.orderItemMapper = orderItemMapper;
     }
+    //--------------------------------------------------------------
+    // OrderController για πελατες ΜΟΝΟ
+    //--------------------------------------------------------------
 
-    // 🔐 CUSTOMER ONLY
     @PostMapping("/orders/add-item")
     public String addItemToOrder(@RequestParam Long menuItemId) {
 
@@ -70,12 +72,12 @@ public class OrderController {
         }
 
         OrderView order = orderBusinessLogicService
-                .getOpenOrderForCurrentCustomer(user.id())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .getOrCreateOpenOrderForCustomer(user.id());
 
         model.addAttribute("order", order);
         return "my_order";
     }
+
 
     @PostMapping("/my_order/submit")
     public String submitOrder() {
@@ -92,12 +94,10 @@ public class OrderController {
         return "redirect:/order_pending";
     }
 
-
-    // -----------------------------
-    // STEP 3: Waiting page
-    // -----------------------------
+    //Waiting page
     @GetMapping("/order_pending")
     public String orderPending(Model model) {
+
         CurrentUser user = currentUserProvider.getCurrentUser()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
 
@@ -106,12 +106,13 @@ public class OrderController {
         }
 
         OrderView order = orderBusinessLogicService
-                .getOpenOrderForCurrentCustomer(user.id())
+                .getLatestPendingOrderForCustomer(user.id())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        model.addAttribute("order",order);
+        model.addAttribute("order", order);
         return "order_pending";
     }
+
 
 
 }

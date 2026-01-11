@@ -171,6 +171,12 @@ public final class Order {
         this.items = items;
     }
 
+    public boolean isActive() {
+        return status != OrderStatus.COMPLETED
+                && status != OrderStatus.CANCELLED;
+    }
+
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Order{");

@@ -1,5 +1,6 @@
 package gr.hua.dit.StreetFoodGo.core.repository;
 
+import gr.hua.dit.StreetFoodGo.core.model.Client;
 import gr.hua.dit.StreetFoodGo.core.model.Order;
 import gr.hua.dit.StreetFoodGo.core.model.OrderStatus;
 import gr.hua.dit.StreetFoodGo.core.service.model.OrderView;
@@ -9,7 +10,11 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+/**
+ * Repository for {@link Order} entiry.
+ */
 @Repository
 public interface OrderRepository extends JpaRepository<Order,Long> {
 
@@ -23,4 +28,10 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
 
     Optional<Order> findOpenByCustomerId(Long customerId);
 
+    Optional<Order> findByCustomerIdAndStatusIn(Long customerId, Set<OrderStatus> active);
+
+    Optional<Order> findFirstByCustomerIdAndStatusOrderByQueuedAtDesc(
+            Long customerId,
+            OrderStatus status
+    );
 }

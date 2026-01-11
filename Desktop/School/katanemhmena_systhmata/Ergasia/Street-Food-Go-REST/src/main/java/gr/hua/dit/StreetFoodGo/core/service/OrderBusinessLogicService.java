@@ -19,6 +19,8 @@ import java.util.Optional;
 public interface OrderBusinessLogicService {
     Optional<OrderView> getOrder(Long id);
 
+    OrderView getOrCreateOpenOrderForCustomer(Long customerId);
+
     public void addItemToOpenOrder(Long customerId, Long menuItemId);
 
     List<OrderView> getOrders();
@@ -49,4 +51,6 @@ public interface OrderBusinessLogicService {
     void removeItemFromOpenOrder(Long customerId, Long menuItemId);
 
     void submitOrder(long id);
+
+    Optional<OrderView> getLatestPendingOrderForCustomer(Long customerId);
 }

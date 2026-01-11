@@ -127,10 +127,8 @@ public final class Menu {
             items = new ArrayList<>();
         }
 
-        // Σύνδεση του item με αυτό το menu
         item.setMenu(this);
 
-        // Προσθήκη στη λίστα του menu
         items.add(item);
     }
 

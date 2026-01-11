@@ -30,9 +30,7 @@ public class RestaurantOrderController {
         this.currentUserProvider = currentUserProvider;
     }
 
-    // -----------------------------
-    // LIST ORDERS
-    // -----------------------------
+    // show list of orders for a restaurant
     @GetMapping
     public String list(Model model) {
 
@@ -50,9 +48,7 @@ public class RestaurantOrderController {
         return "orders";
     }
 
-    // -----------------------------
-    // ORDER DETAILS
-    // -----------------------------
+    // details for an order
     @GetMapping("/{orderId}")
     public String detail(@PathVariable long orderId, Model model) {
 
@@ -70,9 +66,7 @@ public class RestaurantOrderController {
         return "order";
     }
 
-    // -----------------------------
-    // ACTIONS
-    // -----------------------------
+    // accept/reject/start/complete
     @PostMapping("/{orderId}/accept")
     public String accept(@PathVariable long orderId) {
         orderBusinessLogicService.acceptOrder(orderId);
