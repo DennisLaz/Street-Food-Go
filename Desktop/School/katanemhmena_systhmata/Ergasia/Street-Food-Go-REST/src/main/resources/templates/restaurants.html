@@ -1,19 +1,29 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="el"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+
 <head>
     <title>Restaurants</title>
 </head>
+
 <body>
 
-<h1>Restaurants</h1>
+<section layout:fragment="main">
 
-<ul>
-    <li th:each="restaurant : ${restaurants}">
-        <a th:href="@{/restaurants/{id}(id=${restaurant.id})}">
-            <span th:text="${restaurant.username}"></span>
-        </a>
-    </li>
-</ul>
+    <h1>Restaurants</h1>
+
+    <ul>
+        <li th:each="restaurant : ${restaurants}">
+            <a th:href="@{/restaurants/{id}(id=${restaurant.id})}">
+                <span th:text="${restaurant.username}"></span>
+            </a>
+        </li>
+    </ul>
+
+</section>
 
 </body>
 </html>
+

@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html   lang="el" xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{base}">
 <head>
     <title>My Order</title>
 </head>
 <body>
+
+<section layout:fragment="main">
 
 <h1>My Cart</h1>
 
@@ -49,6 +53,8 @@
 <form th:if="${!order.items.isEmpty()}" th:action="@{/my_order/submit}" method="post">
     <button type="submit">Submit Order</button>
 </form>
+
+</section>
 
 </body>
 </html>
