@@ -46,6 +46,7 @@ Menu: OXI
 API:
 Username: client01
 Password: s3cr3t
+Handle για localhost: /swagger-ui/index.html
 
 
 
