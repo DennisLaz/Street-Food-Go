@@ -43,6 +43,12 @@ Email: saltomortale@gmail.com
 Password: 12345
 Menu: OXI
 
+API:
+Username: client01
+Password: s3cr3t
+
+
+
 Σημειώνεται ότι μόνο τα profiles BurgerHouse και StreetTacos διαθέτουν ήδη καταχωρημένο μενού, ενώ τα υπόλοιπα μπορούν να δημιουργήσουν μενού μέσω της εφαρμογής.
 Παρατηρήσεις
 - Τα αρχικά δεδομένα δημιουργούνται αυτόματα κατά την εκκίνηση
